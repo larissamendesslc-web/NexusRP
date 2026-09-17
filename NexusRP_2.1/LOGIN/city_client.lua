@@ -105,10 +105,10 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
     guide = createPed(g.skin,g.x,g.y,g.z,g.rotation)
     if guide then
         setElementFrozen(guide,true)
-        setPedAnimation(guide,"COP_AMBIENT","Coplook_loop",-1,true,false,false,false)
+        setElementCollisionsEnabled(guide,false)
+        -- ISOLAMENTO TEMPORÁRIO: setPedAnimation e onClientPedDamage removidos para testar o crash ao socar o Alex.
     end
 end)
-addEventHandler("onClientPedDamage", root, function() if source == guide then cancelEvent() end end)
 addEventHandler("onClientResourceStop", resourceRoot, function() hide(true) end)
 
 addEventHandler("onClientRender", root, function()
