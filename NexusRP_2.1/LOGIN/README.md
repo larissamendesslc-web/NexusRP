@@ -29,8 +29,9 @@ Desative o startup de play caso esteja usando somente o NexusRP.
 - Botões Continuar, Voltar, Pular e Começar minha história.
 - Backspace fecha o tutorial e marca como visto. /tutorial permite rever a qualquer hora,
   estando vivo e fora de um veículo. Pular/concluir não concede dinheiro nem teleporta.
-- HUD roxo: nome, ID persistente da conta, saldo real do MTA, vida, colete e localização.
-- Radar, armas e munição continuam disponíveis no HUD nativo.
+- O desenho de HUD (vida/colete/dinheiro/etc.) foi movido para o resource separado
+  `HUD` (veja `HUD/README.md`). Este resource só avisa ele quando o jogador entra/sai
+  da cidade via `nexusHud_setActive`/`nexusHud_getState`; instale os dois juntos.
 - Posição, rotação, interior, dimensão, dinheiro, vida e colete são salvos a cada
   60 segundos, ao sair, ao deslogar e ao parar o resource normalmente.
 - Próximo login recupera o último estado salvo. Conta sem estado salvo nasce no aeroporto.
@@ -43,11 +44,13 @@ Desative o startup de play caso esteja usando somente o NexusRP.
 
 config.lua: nome/cor da tela de login, skins iniciais e spawn.
 welcome_config.lua: posição/skin do NPC, falas e intervalo de salvamento.
-city_client.lua: desenho e cores do HUD/diálogo em DX nativo do MTA.
+city_client.lua: diálogo do tutorial e interação com o NPC Alex, em DX nativo do MTA.
 city_server.lua: persistência e estado de tutorial.
 
-A interface de login continua em CEF. A recepção e o HUD usam DX para esta etapa.
-Não há cutscene, GPS/rota, empregos, inventário, fome/sede, hospital ou economia de lojas.
+A interface de login continua em CEF. A recepção usa DX para esta etapa; o HUD em si
+vive no resource `HUD`. Não há cutscene, GPS/rota, empregos, inventário, fome/sede,
+hospital ou economia de lojas (fome/sede e gasolina já têm ponto de integração
+preparado no HUD, só falta o sistema que alimenta esses dados).
 A persistência de dinheiro acompanha o saldo nativo; não cria uma moeda separada.
 Veículos, armas e inventário ainda não são persistidos. Ao reconectar, o jogador
 volta a pé à posição salva. Uma queda abrupta pode perder até um intervalo de autosave.
@@ -68,7 +71,8 @@ volta a pé à posição salva. Uma queda abrupta pode perder até um intervalo 
 - Manifesto XML, arquivos e solicitação de permissão verificados.
 - Testes Lua com APIs do MTA simuladas cobrem persistência, logout, valores do jogador,
   origem inválida de evento, tutorial persistente, sync repetido, respawn, execução
-  do desenho de HUD/diálogo, conclusão, Backspace e limpeza ao parar.
+  do diálogo, sincronização com o resource HUD externo, conclusão, Backspace e
+  limpeza ao parar.
 - Não executado no MTA/CEF real; desenho, NPC e integração com outros resources
   precisam do teste local descrito acima. Os testes simulados não substituem isso.
 

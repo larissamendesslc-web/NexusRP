@@ -15,6 +15,7 @@
 
     <export function="openAuthScreen" type="client" />
     <export function="closeAuthScreen" type="client" />
+    <export function="nexusHud_getState" type="client" />
 
     <!-- Carrega este resource antes dos mods para capturar o progresso real. -->
     <download_priority_group>1000</download_priority_group>

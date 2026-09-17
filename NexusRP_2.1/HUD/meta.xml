@@ -1,0 +1,20 @@
+<meta>
+    <info author="Nexus" name="Nexus HUD" version="1.0.0" type="script" />
+
+    <script src="config.lua" type="shared" cache="false" />
+    <script src="circle/hou_circle.lua" type="client" cache="false" />
+    <script src="client.lua" type="client" cache="false" />
+
+    <file src="circle/hou_circle.fx" />
+    <file src="assets/logo.png" />
+    <file src="assets/health.png" />
+    <file src="assets/armor.png" />
+    <file src="assets/hunger.png" />
+    <file src="assets/thirst.png" />
+    <file src="assets/voice.png" />
+    <file src="assets/fonts/bold.ttf" />
+
+    <export function="nexusHud_setActive" type="client" />
+
+    <min_mta_version client="1.6.0" server="1.6.0" />
+</meta>

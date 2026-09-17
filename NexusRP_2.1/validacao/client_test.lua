@@ -28,11 +28,18 @@ function getElementInterior()return 1 end
 function getElementDimension()return 0 end
 function getZoneName()return 'Los Santos' end
 function getCursorPosition()return .5,.5 end
+local hudCalls={}
+function getResourceFromName(name)if name=='HUD' then return 'HUD_RESOURCE' end end
+function call(resource,func,arg)hudCalls[#hudCalls+1]={resource,func,arg}end
 dofile('LOGIN/welcome_config.lua');dofile('LOGIN/city_client.lua')
 emit('nexusCity:state',{id=7,name='Alan Silva',tutorialDone=false});assert(frozen and cursor)
+assert(nexusHud_getState()==true)
+local last=hudCalls[#hudCalls];assert(last[1]=='HUD_RESOURCE' and last[2]=='nexusHud_setActive' and last[3]==true)
 for i=1,4 do emit('onClientRender');emit('onClientClick','left','up',1000,780)end
 assert(not frozen and not cursor and sent==1)
 commands.tutorial();assert(frozen);emit('onClientKey','backspace',true);assert(not frozen and not cursor and sent==2)
 commands.tutorial();emit('onClientResourceStop');assert(not frozen and not cursor)
+assert(nexusHud_getState()==false)
+last=hudCalls[#hudCalls];assert(last[1]=='HUD_RESOURCE' and last[2]=='nexusHud_setActive' and last[3]==false)
 emit('nexusCity:state',{id=7,name='Alan Silva',tutorialDone=true});assert(not frozen);emit('onClientRender')
-print('PASS: render HUD/diálogo, concluir quatro etapas, Backspace, rever tutorial e liberar ao parar.')
+print('PASS: render HUD/diálogo, concluir quatro etapas, Backspace, rever tutorial, liberar ao parar e sincronizar HUD externo.')
