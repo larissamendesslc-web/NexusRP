@@ -1,0 +1,25 @@
+<meta>
+    <info author="Nexus" name="Nexus Login &amp; Character" version="2.1.0" type="script" />
+
+    <script src="config.lua" type="shared" cache="false" />
+    <script src="server.lua" type="server" />
+    <script src="client.lua" type="client" cache="false" />
+
+    <script src="welcome_config.lua" type="shared" cache="false" />
+    <script src="city_server.lua" type="server" />
+    <script src="city_client.lua" type="client" cache="false" />
+
+    <file src="html/index.html" />
+    <file src="html/styles.css" />
+    <file src="html/app.js" />
+
+    <export function="openAuthScreen" type="client" />
+    <export function="closeAuthScreen" type="client" />
+
+    <!-- Carrega este resource antes dos mods para capturar o progresso real. -->
+    <download_priority_group>1000</download_priority_group>
+    <min_mta_version client="1.6.0" server="1.6.0" />
+    <aclrequest>
+        <right name="function.addAccount" access="true" />
+    </aclrequest>
+</meta>

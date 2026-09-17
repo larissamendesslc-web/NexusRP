@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nexus Auth</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <main class="shell">
+        <div class="ambient ambient-one"></div>
+        <div class="ambient ambient-two"></div>
+        <div class="noise"></div>
+        <div class="city-grid"></div>
+
+        <section id="loadingView" class="view loading-view active">
+            <div class="topbar">
+                <div class="server-pill"><span></span> SERVIDOR ONLINE</div>
+                <button id="soundButton" class="icon-button" type="button">
+                    <span id="soundIcon">♫</span>
+                    <span id="soundLabel">MÚSICA</span>
+                </button>
+            </div>
+
+            <div class="loading-content">
+                <div class="emblem-wrap">
+                    <div class="orbit orbit-one"></div>
+                    <div class="orbit orbit-two"></div>
+                    <div class="emblem">N</div>
+                </div>
+
+                <div class="brand-block">
+                    <p class="eyebrow">BEM-VINDO AO</p>
+                    <h1 data-brand>NexusRP</h1>
+                    <p data-subtitle>UMA NOVA HISTÓRIA COMEÇA AQUI</p>
+                </div>
+
+                <div class="progress-wrap">
+                    <div class="progress-head">
+                        <span id="loadingStatus">Aguardando dados do servidor...</span>
+                        <strong id="loadingPercent">0%</strong>
+                    </div>
+                    <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
+                    <span id="progressType" class="progress-type">INICIALIZANDO CARREGADOR</span>
+                </div>
+            </div>
+
+            <div class="footer-hint"><span class="mouse"></span> PREPARE-SE PARA VIVER SUA HISTÓRIA</div>
+        </section>
+
+        <section id="authView" class="view auth-view">
+            <div class="auth-brand">
+                <div class="small-emblem">N</div>
+                <div>
+                    <strong data-brand>NexusRP</strong>
+                    <span>IDENTIDADE • HISTÓRIA • EVOLUÇÃO</span>
+                </div>
+            </div>
+
+            <div class="auth-copy">
+                <p class="eyebrow">SUA JORNADA</p>
+                <h2>Entre na cidade.<br /><span>Construa seu legado.</span></h2>
+                <p>Crie sua identidade, desembarque em Los Santos e comece uma história que será só sua.</p>
+                <div class="features">
+                    <span>● Personagem persistente</span>
+                    <span>● Roleplay imersivo</span>
+                    <span>● Comunidade ativa</span>
+                </div>
+            </div>
+
+            <div id="authCard" class="auth-card">
+                <div class="tabs" role="tablist">
+                    <button class="tab active" data-mode="login" type="button">ENTRAR</button>
+                    <button class="tab" data-mode="register" type="button">CRIAR PERSONAGEM</button>
+                </div>
+
+                <div class="card-title">
+                    <p id="formEyebrow">BEM-VINDO DE VOLTA</p>
+                    <h3 id="formTitle">Acesse sua conta</h3>
+                </div>
+
+                <form id="authForm" autocomplete="off">
+                    <label for="username">USUÁRIO DA CONTA</label>
+                    <div class="input-wrap">
+                        <span>◉</span>
+                        <input id="username" type="text" minlength="3" maxlength="24" placeholder="Digite seu usuário" required />
+                    </div>
+
+                    <label for="password">SENHA</label>
+                    <div class="input-wrap">
+                        <span>◆</span>
+                        <input id="password" type="password" minlength="6" maxlength="30" placeholder="Digite sua senha" required />
+                        <button id="togglePassword" class="show-password" type="button">MOSTRAR</button>
+                    </div>
+
+                    <div id="registerFields" class="register-fields hidden">
+                        <label for="confirmPassword">CONFIRMAR SENHA</label>
+                        <div class="input-wrap">
+                            <span>◆</span>
+                            <input id="confirmPassword" type="password" minlength="6" maxlength="30" placeholder="Repita sua senha" />
+                        </div>
+
+                        <div class="field-grid">
+                            <div>
+                                <label for="characterName">NOME E SOBRENOME</label>
+                                <div class="input-wrap">
+                                    <span>●</span>
+                                    <input id="characterName" type="text" minlength="5" maxlength="40" placeholder="Ex.: Lucas Almeida" />
+                                </div>
+                            </div>
+                            <div class="age-field">
+                                <label for="characterAge">IDADE</label>
+                                <div class="input-wrap">
+                                    <span>⌁</span>
+                                    <input id="characterAge" type="number" min="18" max="80" placeholder="18" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <label>ESCOLHA SEU PERSONAGEM</label>
+                        <div class="character-options">
+                            <button class="character-card selected" data-sex="male" type="button">
+                                <span class="character-avatar male-avatar">♂</span>
+                                <span><strong>MASCULINO</strong><small>PERSONAGEM 01</small></span>
+                                <i>✓</i>
+                            </button>
+                            <button class="character-card" data-sex="female" type="button">
+                                <span class="character-avatar female-avatar">♀</span>
+                                <span><strong>FEMININO</strong><small>PERSONAGEM 02</small></span>
+                                <i>✓</i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="feedback" class="feedback" aria-live="polite"></div>
+
+                    <button id="submitButton" class="submit-button" type="submit">
+                        <span id="submitText">ENTRAR NA CIDADE</span>
+                        <span class="arrow">→</span>
+                    </button>
+                </form>
+
+                <p id="switchText" class="switch-text">Ainda não possui uma conta? <button type="button" data-switch>Crie seu personagem</button></p>
+            </div>
+
+            <button id="authSoundButton" class="auth-sound" type="button">♫ MÚSICA ATIVA</button>
+        </section>
+
+        <div id="successOverlay" class="success-overlay">
+            <div class="success-mark">✓</div>
+            <strong>AUTENTICADO</strong>
+            <span>Entrando no NexusRP...</span>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
