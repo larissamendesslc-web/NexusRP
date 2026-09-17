@@ -105,15 +105,10 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
     guide = createPed(g.skin,g.x,g.y,g.z,g.rotation)
     if guide then
         setElementFrozen(guide,true)
-        -- Evita tocar a animação antes do modelo/IFP terminar o streaming (crashava o cliente ao aproximar).
-        setTimer(function()
-            if isElement(guide) then
-                setPedAnimation(guide,"COP_AMBIENT","Coplook_loop",-1,true,false,false,false)
-            end
-        end, 500, 1)
+        setElementCollisionsEnabled(guide,false)
+        -- ISOLAMENTO TEMPORÁRIO: setPedAnimation e onClientPedDamage removidos para testar o crash ao socar o Alex.
     end
 end)
-addEventHandler("onClientPedDamage", root, function() if source == guide then cancelEvent() end end)
 addEventHandler("onClientResourceStop", resourceRoot, function() hide(true) end)
 
 addEventHandler("onClientRender", root, function()
