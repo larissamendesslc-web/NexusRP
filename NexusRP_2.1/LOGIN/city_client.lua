@@ -1,19 +1,21 @@
 local active, profile, guide = false, nil, nil
 local page, frozenBefore, cursorBefore = nil, false, false
 local buttons = {}
-local hidden = { "health", "armour", "money", "clock", "area_name", "vehicle_name" }
-local previousHud = {}
 local white, muted, purple = tocolor(245,244,252), tocolor(170,171,190), tocolor(139,92,246)
-local function hud(visible)
-    for _, component in ipairs(hidden) do
-        if visible then
-            if previousHud[component] == nil then previousHud[component] = isPlayerHudComponentVisible(component) end
-            setPlayerHudComponentVisible(component, false)
-        elseif previousHud[component] ~= nil then
-            setPlayerHudComponentVisible(component, previousHud[component])
-        end
+
+-- O desenho do HUD (vida/colete/dinheiro/etc.) mudou para o resource HUD separado.
+-- Isto só avisa ele quando o jogador entra/sai da cidade, sem tocar no fluxo de login/tutorial.
+local function syncHud(isActive)
+    local hudResource = getResourceFromName("HUD")
+    if hudResource then
+        call(hudResource, "nexusHud_setActive", isActive)
     end
-    if not visible then previousHud = {} end
+end
+
+-- Exportada: permite o resource HUD perguntar o estado atual caso ele seja reiniciado sozinho
+-- enquanto o jogador já está autenticado (ex.: admin dá "restart HUD" no meio do jogo).
+function nexusHud_getState()
+    return active
 end
 local function endDialog(mark, restore)
     if not page then return end
@@ -39,22 +41,13 @@ end
 local function hide(restore)
     endDialog(false, restore)
     active, profile = false, nil
-    hud(false)
+    syncHud(false)
 end
 local function nearGuide(distance)
     if getElementInterior(localPlayer) ~= 0 or getElementDimension(localPlayer) ~= 0 then return false end
     local x,y,z = getElementPosition(localPlayer)
     local g = NEXUS_CITY.guide
     return getDistanceBetweenPoints3D(x,y,z,g.x,g.y,g.z) <= distance
-end
-local function money(value)
-    local s = tostring(math.floor(value))
-    while true do
-        local changed
-        s, changed = s:gsub("^(-?%d+)(%d%d%d)", "%1.%2")
-        if changed == 0 then break end
-    end
-    return "R$ " .. s
 end
 local function box(x,y,w,h,color) dxDrawRectangle(x,y,w,h,color) end
 local function text(value,x,y,w,h,color,size,font,align,wrap)
@@ -78,7 +71,7 @@ addEvent("nexusCity:state", true)
 addEventHandler("nexusCity:state", resourceRoot, function(data)
     if type(data) ~= "table" then return end
     profile, active = data, true
-    hud(true)
+    syncHud(true)
     if not data.tutorialDone then startDialog() end
 end)
 addEvent("nexusCity:hide", true)
@@ -115,24 +108,6 @@ addEventHandler("onClientRender", root, function()
     if not active then return end
     local sw,sh = guiGetScreenSize()
     local s = math.min(sw/1600,sh/900)
-    local x,y,w = sw-354*s,30*s,324*s
-    box(x,y,w,176*s,tocolor(17,18,29,225))
-    box(x,y,4*s,176*s,purple)
-    text("NEXUS",x+20*s,y+12*s,160*s,30*s,white,1.65*s,"default-bold")
-    text("ROLEPLAY",x+20*s,y+40*s,160*s,20*s,muted,.9*s,"default-bold")
-    text("ID "..tostring(profile.id or "—"),x+212*s,y+18*s,92*s,24*s,purple,1.1*s,"default-bold","right")
-    text(tostring(profile.name or "Cidadão"),x+20*s,y+65*s,w-40*s,24*s,white,1.15*s,"default-bold")
-    text(money(getPlayerMoney(localPlayer)),x+20*s,y+93*s,w-40*s,32*s,white,1.55*s,"default-bold")
-    local hp = math.max(0,math.min(100,getElementHealth(localPlayer)))
-    local armor = math.max(0,math.min(100,getPedArmor(localPlayer)))
-    text("VIDA  "..math.floor(hp).."%",x+20*s,y+133*s,134*s,18*s,muted,.85*s,"default-bold")
-    text("COLETE  "..math.floor(armor).."%",x+171*s,y+133*s,133*s,18*s,muted,.85*s,"default-bold")
-    box(x+20*s,y+158*s,133*s,5*s,tocolor(50,49,65))
-    box(x+20*s,y+158*s,133*s*hp/100,5*s,tocolor(78,209,155))
-    box(x+171*s,y+158*s,133*s,5*s,tocolor(50,49,65))
-    box(x+171*s,y+158*s,133*s*armor/100,5*s,purple)
-    local px,py,pz = getElementPosition(localPlayer)
-    text(getZoneName(px,py,pz),x,y+181*s,w,24*s,white,.95*s,"default","right")
     if not page and nearGuide(18) and isElement(guide) then
         local g = NEXUS_CITY.guide
         local sx,sy = getScreenFromWorldPosition(g.x,g.y,g.z+1.15)
